@@ -85,15 +85,6 @@ class _PerfilState extends State<Perfil> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 2),
-              const Text(
-                'Receitas',
-                style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: corPrincipalEscura
-                ),
-              ),
-              const SizedBox(height: 24),
               TextField(
                 controller: _searchController,
                 decoration: InputDecoration(
@@ -160,7 +151,6 @@ class _PerfilState extends State<Perfil> {
               ),
               const SizedBox(height: 16),
 
-              // Primeiro Card
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
