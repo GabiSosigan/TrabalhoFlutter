@@ -1,6 +1,6 @@
-# projetoaula
+# Bake & Brew
 
-Primeiro projeto da flex
+Primeiro projeto da flex de desenvolvimento web com Flutter: Aplicativo de receitas
 
 ## Getting Started
 
