@@ -14,6 +14,27 @@ class _PerfilState extends State<Perfil> {
   bool _hasSearched = false;
   String? _errorMessage;
 
+  final List<Map<String, dynamic>> _todasAsReceitas = [
+  {
+  'nome': 'Chocolate Quente',
+  'tempo': '20 min • Fácil',
+  'nota': '5 / 5',
+  'icone': Icons.coffee,
+  },
+  {
+  'nome': 'Matcha Latte',
+  'tempo': '10 min • Fácil',
+  'nota': '4.0 / 5',
+  'icone': Icons.emoji_food_beverage_rounded,
+  },
+  {
+  'nome': 'Croissant',
+  'tempo': '1h 20 min • Médio',
+  'nota': '4.8 / 5',
+  'icone': Icons.bakery_dining,
+  },
+  ];
+
   void _realizarPesquisa() {
     final textoDigitado = _searchController.text;
 
@@ -54,6 +75,14 @@ class _PerfilState extends State<Perfil> {
     const corTextoSecundario = Color(0xFF8A6F57);
     const corPrincipalEscura = Color(0xFF3B2B24);
 
+    final receitasExibidas = _hasSearched
+        ? _todasAsReceitas.where((receita) {
+      return (receita['nome'] as String)
+          .toLowerCase()
+          .contains(_searchedTerm.toLowerCase());
+    }).toList()
+        : _todasAsReceitas;
+
     return Scaffold(
       backgroundColor: corFundo,
       appBar: AppBar(
@@ -77,7 +106,6 @@ class _PerfilState extends State<Perfil> {
           ],
         ),
       ),
-
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20.0),
@@ -151,158 +179,71 @@ class _PerfilState extends State<Perfil> {
               ),
               const SizedBox(height: 16),
 
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: corBordaIcone),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: corCaixaClara,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(Icons.coffee, color: corTextoSecundario, size: 40),
+              if (receitasExibidas.isEmpty)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 30),
+                  child: Center(
+                    child: Text(
+                      'Nenhuma receita encontrada.',
+                      style: TextStyle(fontSize: 16, color: corTextoSecundario),
                     ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
+                )
+              else
+                ...receitasExibidas.map((receita) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0),
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: corBordaIcone),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Row(
                         children: [
-                          const Text(
-                            'Chocolate Quente',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: corPrincipalEscura),
+                          Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: corCaixaClara,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Icon(receita['icone'] as IconData, color: corTextoSecundario, size: 40),
                           ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            '20 min • Fácil',
-                            style: TextStyle(fontSize: 12, color: corTextoSecundario),
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                '5 / 5',
-                                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: corPrincipalEscura),
-                              ),
-                              Icon(Icons.favorite_border, size: 20, color: corPrincipalEscura),
-                            ],
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  receita['nome'] as String,
+                                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: corPrincipalEscura),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  receita['tempo'] as String,
+                                  style: const TextStyle(fontSize: 12, color: corTextoSecundario),
+                                ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      receita['nota'] as String,
+                                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: corPrincipalEscura),
+                                    ),
+                                    const Icon(Icons.favorite_border, size: 20, color: corPrincipalEscura),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 15),
-
-              // Segundo Card
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: corBordaIcone),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: corCaixaClara,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(Icons.emoji_food_beverage_rounded, color: corTextoSecundario, size: 40),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Matcha Latte',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: corPrincipalEscura),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            '10 min • Fácil',
-                            style: TextStyle(fontSize: 12, color: corTextoSecundario),
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                '4.0 / 5',
-                                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: corPrincipalEscura),
-                              ),
-                              Icon(Icons.favorite_border, size: 20, color: corPrincipalEscura),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 15),
-
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: corBordaIcone),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        color: corCaixaClara,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(Icons.bakery_dining, color: corTextoSecundario, size: 40),
-                    ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Croissant',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: corPrincipalEscura),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            '1h 20 min • Médio',
-                            style: TextStyle(fontSize: 12, color: corTextoSecundario),
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text(
-                                '4.8 / 5',
-                                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: corPrincipalEscura),
-                              ),
-                              Icon(Icons.favorite_border, size: 20, color: corPrincipalEscura),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                  );
+                }).toList(),
 
               if (_hasSearched) ...[
                 const SizedBox(height: 24),
