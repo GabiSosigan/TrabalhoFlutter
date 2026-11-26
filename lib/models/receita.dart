@@ -1,8 +1,5 @@
 /// Receita retornada pela API DummyJSON.
-///
-/// O parsing é defensivo: campos ausentes ou com tipo inesperado viram
-/// `null` (ou lista vazia) em vez de quebrar o app. Somente o `id` é
-/// obrigatório, pois é a identidade da receita (seleção e favoritos).
+
 class Receita {
   const Receita({
     required this.id,
@@ -26,13 +23,11 @@ class Receita {
   final List<String> passos;
   final String? imagem;
 
-  /// `num` porque a API pode mandar int ou double.
   final num? tempoPreparo;
   final num? tempoCozimento;
   final num? porcoes;
   final num? nota;
 
-  /// `mealType` é uma lista (ex.: ["Dinner", "Lunch"]), nunca uma String única.
   final List<String> tiposRefeicao;
 
   /// Etiquetas da API (ex.: ["Cookies", "Dessert", "Baking"]).
@@ -62,19 +57,13 @@ class Receita {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // Valores prontos para exibição
-  // ---------------------------------------------------------------------------
-
-  /// Nome para exibir; trata ausência e texto vazio.
   String get titulo => nome ?? 'Receita sem nome';
 
-  /// Tags que, mesmo sem ser sobremesa ou bebida, combinam com padaria
-  /// (pão e massas). Remova ou acrescente itens para ajustar o cardápio.
   static const _tagsDePadaria = {'baking', 'bruschetta', 'spanakopita'};
 
   /// Define se a receita combina com o tema do app (padaria e cafeteria):
   /// sobremesas, bebidas (exceto drinks alcoólicos) e itens de forno/pães.
+
   bool get ehPadariaCafeteria {
     final tipos = tiposRefeicao.map((t) => t.toLowerCase()).toSet();
     final etiquetas = tags.map((t) => t.toLowerCase()).toSet();
@@ -86,8 +75,6 @@ class Receita {
         etiquetas.any(_tagsDePadaria.contains);
   }
 
-  /// O total só existe se AMBOS os tempos foram informados.
-  /// Ausência nunca é tratada como zero.
   num? get tempoTotal {
     final preparo = tempoPreparo;
     final cozimento = tempoCozimento;
@@ -95,7 +82,6 @@ class Receita {
     return preparo + cozimento;
   }
 
-  /// Resumo curto de tempo para os cards da listagem.
   String get resumoTempo {
     final total = tempoTotal;
     if (total != null) return formatarMinutos(total);
@@ -106,14 +92,12 @@ class Receita {
     return 'Tempo não informado';
   }
 
-  /// Ex.: "4.7 / 5". Sem nota, indica a ausência.
   String get notaTexto {
     final valor = nota;
     if (valor == null) return 'Sem avaliação';
     return '${valor.toDouble().toStringAsFixed(1)} / 5';
   }
 
-  /// Porções só são exibidas quando o valor é utilizável (> 0).
   bool get temPorcoes {
     final valor = porcoes;
     return valor != null && valor > 0;
@@ -125,8 +109,6 @@ class Receita {
     return valor == valor.truncate() ? '${valor.toInt()}' : '$valor';
   }
 
-  /// Traduz só a dificuldade (para combinar com o visual original);
-  /// qualquer outro valor é exibido como veio da API.
   String? get dificuldadeTexto {
     switch (dificuldade?.toLowerCase()) {
       case 'easy':
@@ -141,7 +123,6 @@ class Receita {
   }
 }
 
-/// Ex.: 45 -> "45 min", 80 -> "1h 20 min", 120 -> "2h".
 String formatarMinutos(num minutos) {
   final total = minutos.round();
   if (total < 60) return '$total min';
@@ -149,10 +130,6 @@ String formatarMinutos(num minutos) {
   final resto = total % 60;
   return resto == 0 ? '${horas}h' : '${horas}h $resto min';
 }
-
-// -----------------------------------------------------------------------------
-// Conversões seguras
-// -----------------------------------------------------------------------------
 
 int? _paraInt(dynamic valor) {
   if (valor is int) return valor;

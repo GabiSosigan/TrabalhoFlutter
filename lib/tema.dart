@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Paleta do app (mesmas cores usadas no design original).
 class Cores {
   Cores._();
 

@@ -6,7 +6,6 @@ import 'package:projetoaula/models/receita.dart';
 
 enum TipoErro { rede, servidor, formato }
 
-/// Único tipo de erro que a interface precisa tratar.
 class ReceitaException implements Exception {
   const ReceitaException._(this.tipo, this.mensagem, [this.statusCode]);
 
@@ -38,10 +37,7 @@ class ReceitaException implements Exception {
 }
 
 /// Acesso à API https://dummyjson.com/docs/recipes
-///
-/// Detalhe da receita: a listagem e a pesquisa já devolvem o objeto completo
-/// (ingredientes e instruções), então a tela de detalhes reaproveita esse
-/// objeto em vez de chamar /recipes/{id} de novo.
+
 class ReceitaService {
   ReceitaService({http.Client? client}) : _client = client ?? http.Client();
 
@@ -50,15 +46,10 @@ class ReceitaService {
   static const _host = 'dummyjson.com';
   static const _timeout = Duration(seconds: 15);
 
-  /// Busca os endpoints de uma categoria (ex.: /recipes/meal-type/dessert,
-  /// /recipes/tag/Baking, /recipes) e junta tudo sem duplicatas, pelo `id`.
-  /// `limit=0` traz todos os itens, sem paginar.
-  /// GET /recipes?limit=0 (traz todas as receitas e filtra por padaria/cafeteria).
   Future<List<Receita>> listar() {
     return _buscarLista(Uri.https(_host, '/recipes', {'limit': '0'}));
   }
 
-  /// GET /recipes/search?q=termo (Uri.https já codifica o termo).
   Future<List<Receita>> pesquisar(String termo) {
     return _buscarLista(
       Uri.https(_host, '/recipes/search', {'q': termo.trim(), 'limit': '0'}),
@@ -78,21 +69,18 @@ class ReceitaService {
       try {
         receitas.add(Receita.fromJson(item));
       } on FormatException {
-        continue; // ignora só o item inválido
+        continue;
       }
     }
 
-    // Veio conteúdo, mas nada aproveitável: corpo incompatível.
     if (lista.isNotEmpty && receitas.isEmpty) {
       throw const ReceitaException.formato();
     }
 
-    // O app é de padaria/cafeteria: a API não tem esse filtro, então ele é
-    // aplicado aqui, tanto na listagem quanto na pesquisa.
+    /// Filtragem de receitas de cafeteria/padaria
     return receitas.where((r) => r.ehPadariaCafeteria).toList();
   }
 
-  /// GET assíncrono + validação de status + decodificação do JSON.
   Future<dynamic> _get(Uri uri) async {
     final http.Response resposta;
     try {

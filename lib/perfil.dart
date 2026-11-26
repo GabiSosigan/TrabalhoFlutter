@@ -7,7 +7,8 @@ import 'package:projetoaula/tema.dart';
 
 /// Tela principal: identidade do app + acesso à listagem/pesquisa (Explorar)
 /// e aos favoritos. Aqui ficam as duas instâncias compartilhadas pelas telas:
-/// o serviço da API e o controller de favoritos (fonte única de verdade).
+/// o serviço da API e o controller de favoritos.
+
 class Perfil extends StatefulWidget {
   const Perfil({super.key});
 

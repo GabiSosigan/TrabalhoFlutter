@@ -30,16 +30,9 @@ class _AbaExplorarState extends State<AbaExplorar> {
   List<Receita> _receitas = [];
   ReceitaException? _erro;
 
-  /// Termo da pesquisa em exibição; `null` significa listagem geral.
   String? _termoAtivo;
-
-  /// Mensagem de validação do campo (consulta vazia).
   String? _errorMessage;
-
-  /// Cache da listagem inicial para "Limpar pesquisa" voltar sem nova chamada.
   List<Receita>? _cacheInicial;
-
-  /// Identifica a requisição mais recente: respostas antigas são descartadas.
   int _requisicaoAtual = 0;
 
   bool get _carregando => _status == _Status.carregando;

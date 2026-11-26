@@ -123,7 +123,7 @@ class ReceitaCard extends StatelessWidget {
     );
   }
 
-  /// Ex.: "45 min • Fácil" (mesmo formato do design original).
+
   String _subtitulo() {
     final dificuldade = receita.dificuldadeTexto;
     return dificuldade == null

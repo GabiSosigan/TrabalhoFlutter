@@ -6,7 +6,7 @@ import 'package:projetoaula/widgets/imagem_receita.dart';
 
 /// Detalhes da receita. Reaproveita o objeto completo vindo da listagem/pesquisa
 /// (já contém ingredientes e instruções) e lê os favoritos do controller
-/// compartilhado, então o coração sempre reflete o estado real.
+
 class TelaReceita extends StatelessWidget {
   const TelaReceita({
     super.key,
@@ -196,7 +196,6 @@ class TelaReceita extends StatelessWidget {
     );
   }
 
-  /// Ex.: "Fácil • Italian • 4.7 / 5" (só inclui o que existir).
   String _subtitulo() {
     final partes = <String>[
       if (receita.dificuldadeTexto != null) receita.dificuldadeTexto!,

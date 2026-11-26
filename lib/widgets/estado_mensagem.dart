@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:projetoaula/tema.dart';
 
-/// Mensagem centralizada com ícone, texto e (opcionalmente) uma ação.
 /// Usada para erro de rede/servidor/formato, busca sem resultados e
 /// favoritos vazios, cada um com ícone e texto próprios.
+
 class EstadoMensagem extends StatelessWidget {
   const EstadoMensagem({
     super.key,

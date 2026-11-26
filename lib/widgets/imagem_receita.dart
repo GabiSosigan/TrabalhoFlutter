@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:projetoaula/models/receita.dart';
 import 'package:projetoaula/tema.dart';
 
-/// Ícone alternativo conforme o tipo de refeição (mantém o visual original
-/// com ícones quando não há imagem).
+/// Ícone alternativo conforme o tipo de refeição (caso a imagem não carregue)
+
 IconData iconeDaReceita(Receita receita) {
   final tipos = receita.tiposRefeicao.map((t) => t.toLowerCase()).toList();
   if (tipos.contains('beverage')) return Icons.coffee;
@@ -14,8 +14,8 @@ IconData iconeDaReceita(Receita receita) {
   return Icons.restaurant;
 }
 
-/// Mostra a imagem da receita. Sem URL, enquanto carrega ou se falhar,
-/// exibe a caixa bege com um ícone.
+/// Mostra a imagem da receita.
+
 class ImagemReceita extends StatelessWidget {
   const ImagemReceita({
     super.key,
